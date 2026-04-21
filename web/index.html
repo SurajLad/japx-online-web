@@ -2,19 +2,6 @@
 <html>
 
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
@@ -33,19 +20,154 @@
 
   <title>JSON API Parser JAPX - Decoder Online</title>
   <link rel="manifest" href="manifest.json">
+
+  <style>
+    body {
+      background-color: #0D1117;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      background-color: #0D1117;
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    .logo-box {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #7C3AED 0%, #9F67FF 100%);
+      border-radius: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+      margin-bottom: 40px;
+      animation: pulse 2.5s infinite ease-in-out;
+    }
+
+    .logo-text {
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid rgba(124, 58, 237, 0.1);
+      border-top: 2px solid #7C3AED;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 24px;
+    }
+
+    #loading-text {
+      color: #8B949E;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.8px;
+      text-align: center;
+      min-height: 20px;
+      transition: opacity 0.3s ease;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+      }
+
+      50% {
+        transform: scale(1.04);
+        box-shadow: 0 15px 50px rgba(124, 58, 237, 0.5);
+      }
+
+      100% {
+        transform: scale(1);
+        box-shadow: 0 10px 40px rgba(124, 58, 237, 0.3);
+      }
+    }
+
+    .fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+  </style>
 </head>
 
 <body>
+  <div id="loading-container">
+    <div class="logo-box">
+      <span class="logo-text">{/}</span>
+    </div>
+    <div class="spinner"></div>
+    <div id="loading-text">Initializing..</div>
+  </div>
+
+  <script>
+    const messages = [
+      "Initializing..",
+      "Fueling spaceship to launch..",
+      "Flattening nested dimensions..",
+      "Optimizing JSON streams..",
+      "Decoding reality..",
+      "Preparing for liftoff..",
+      "Warping through nested structures.."
+    ];
+    let messageIndex = 0;
+    const textElement = document.getElementById('loading-text');
+
+    const updateText = () => {
+      textElement.style.opacity = 0;
+      setTimeout(() => {
+        messageIndex = (messageIndex + 1) % messages.length;
+        textElement.innerText = messages[messageIndex];
+        textElement.style.opacity = 1;
+      }, 300);
+    };
+
+    const textInterval = setInterval(updateText, 2200);
+
+    const hideLoader = () => {
+      const loader = document.getElementById('loading-container');
+      loader.classList.add('fade-out');
+      clearInterval(textInterval);
+      setTimeout(() => {
+        loader.remove();
+      }, 800);
+    };
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
+
   <script type="module">
-    // Import the functions you need from the SDKs you need
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
     const firebaseConfig = {
       apiKey: "AIzaSyCCh-txFiEul3-AKZTeDHvcnsk-_P7CReY",
       authDomain: "json-api-parser-jpax.firebaseapp.com",
@@ -56,9 +178,24 @@
       measurementId: "G-19GD2GKM5Y"
     };
 
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
+  </script>
+
+  <script>
+    window.addEventListener('load', function () {
+      if (window._flutter && window._flutter.loader) {
+        window._flutter.loader.load({
+          onEntrypointLoaded: async function (engineInitializer) {
+            const appRunner = await engineInitializer.initializeEngine();
+            await appRunner.runApp();
+            setTimeout(hideLoader, 500);
+          }
+        });
+      } else {
+        window.addEventListener('flutter-first-frame', hideLoader);
+      }
+    });
   </script>
 </body>
 
