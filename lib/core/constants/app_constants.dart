@@ -1,8 +1,8 @@
-/// App-wide constants for JPAX Parser.
+/// App-wide constants for JAPX Parser.
 class AppConstants {
   AppConstants._();
 
-  static const String appName = 'JSON API Parser JPAX';
+  static const String appName = 'JSON API Parser JAPX';
   static const String appVersion = 'v2.0';
   static const String appTagline = 'JSON:API Decoder/Encoder';
   static const String appDescription =
@@ -20,4 +20,36 @@ class AppConstants {
   // Editor defaults
   static const int defaultIndentSpaces = 2;
   static const String defaultFormat = 'JSON';
+
+  static const String sampleJson = '''{
+  "data": {
+    "type": "articles",
+    "id": "1",
+    "attributes": {
+      "title": "JSON:API paints my bikeshed!",
+      "body": "The shortest article ever.",
+      "created": "2015-05-22T14:56:29.000Z",
+      "updated": "2015-05-22T14:56:28.000Z"
+    },
+    "relationships": {
+      "author": {
+        "data": {
+          "id": "42",
+          "type": "people"
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "people",
+      "id": "42",
+      "attributes": {
+        "name": "John",
+        "age": 80,
+        "gender": "male"
+      }
+    }
+  ]
+}''';
 }

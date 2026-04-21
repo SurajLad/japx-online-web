@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_typography.dart';
 
-/// Provides dark and light ThemeData for the JPAX app.
+/// Provides dark and light ThemeData for the JAPX app.
 class AppTheme {
   AppTheme._();
 

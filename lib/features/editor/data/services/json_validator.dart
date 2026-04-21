@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:jpax_online/features/editor/domain/models/json_diagnostic.dart';
+import 'package:japx_online/features/editor/domain/models/json_diagnostic.dart';
 
 /// Validates JSON input and returns a list of diagnostics.
 class JsonValidator {

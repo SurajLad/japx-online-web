@@ -4,9 +4,9 @@ import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
 import 'package:flutter_highlight/themes/github.dart';
 
-import 'package:jpax_online/core/theme/app_colors.dart';
-import 'package:jpax_online/core/theme/app_typography.dart';
-import 'package:jpax_online/features/editor/domain/models/json_diagnostic.dart';
+import 'package:japx_online/core/theme/app_colors.dart';
+import 'package:japx_online/core/theme/app_typography.dart';
+import 'package:japx_online/features/editor/domain/models/json_diagnostic.dart';
 
 /// Reusable JSON editor panel with syntax highlighting, line numbers,
 /// header bar, and optional error gutter markers.
@@ -105,28 +105,27 @@ class _JsonEditorPanelState extends State<JsonEditorPanel> {
                   wrap: true,
                   expands: true,
                   readOnly: widget.readOnly,
-                textStyle: AppTypography.codeStyle.copyWith(
-                  color: textColor,
-                ),
-                gutterStyle: GutterStyle(
-                  width: 48,
-                  textStyle: AppTypography.codeStyleSmall.copyWith(
-                    color: mutedColor,
+                  textStyle: AppTypography.codeStyle.copyWith(
+                    color: textColor,
                   ),
-                  background: isDarkMode
-                      ? AppColors.darkEditorGutter
-                      : AppColors.lightEditorGutter,
+                  gutterStyle: GutterStyle(
+                    width: 48,
+                    textStyle: AppTypography.codeStyleSmall.copyWith(
+                      color: mutedColor,
+                    ),
+                    background: isDarkMode
+                        ? AppColors.darkEditorGutter
+                        : AppColors.lightEditorGutter,
+                  ),
+                  background: bgColor,
                 ),
-                background: bgColor,
               ),
             ),
           ),
-        ),
-      ],
+        ],
       ),
     );
   }
-
 }
 
 class _EditorHeader extends StatelessWidget {
@@ -249,4 +248,3 @@ class _EditorHeaderIcon extends StatelessWidget {
     );
   }
 }
-

@@ -1,13 +1,11 @@
-import 'package:jpax_online/features/model_generator/domain/models/generated_model.dart';
+import 'package:japx_online/features/model_generator/domain/models/generated_model.dart';
 
 /// Generates Dart model class source code from a JSON map.
 class DartModelGenerator {
   /// Generates a Dart model from [json] with the given [className].
   /// If [className] is null, attempts to infer from `type` field.
   GeneratedModel generate(Map<String, dynamic> json, {String? className}) {
-    final name = className ??
-        _inferClassName(json) ??
-        'GeneratedModel';
+    final name = className ?? _inferClassName(json) ?? 'GeneratedModel';
 
     final buffer = StringBuffer();
     final nestedClasses = <String>[];
@@ -57,7 +55,8 @@ class DartModelGenerator {
     // Fields
     for (final field in fields) {
       final nullSuffix = field.isNullable ? '?' : '';
-      buffer.writeln('  final ${field.dartType}$nullSuffix ${field.fieldName};');
+      buffer
+          .writeln('  final ${field.dartType}$nullSuffix ${field.fieldName};');
     }
     buffer.writeln();
 
@@ -71,12 +70,12 @@ class DartModelGenerator {
     buffer.writeln();
 
     // fromJson factory
-    buffer.writeln(
-        '  factory $className.fromJson(Map<String, dynamic> json) {');
+    buffer
+        .writeln('  factory $className.fromJson(Map<String, dynamic> json) {');
     buffer.writeln('    return $className(');
     for (final field in fields) {
-      buffer.writeln(
-          '      ${field.fieldName}: ${_fromJsonExpression(field)},');
+      buffer
+          .writeln('      ${field.fieldName}: ${_fromJsonExpression(field)},');
     }
     buffer.writeln('    );');
     buffer.writeln('  }');
@@ -86,8 +85,7 @@ class DartModelGenerator {
     buffer.writeln('  Map<String, dynamic> toJson() {');
     buffer.writeln('    return {');
     for (final field in fields) {
-      buffer.writeln(
-          "      '${field.jsonKey}': ${_toJsonExpression(field)},");
+      buffer.writeln("      '${field.jsonKey}': ${_toJsonExpression(field)},");
     }
     buffer.writeln('    };');
     buffer.writeln('  }');
@@ -173,13 +171,13 @@ class DartModelGenerator {
     final name = field.fieldName;
 
     if (field.dartType == 'DateTime') {
-      return field.isNullable ? '$name?.toIso8601String()' : '$name.toIso8601String()';
+      return field.isNullable
+          ? '$name?.toIso8601String()'
+          : '$name.toIso8601String()';
     }
     if (field.dartType.startsWith('List<')) {
-      final innerType =
-          field.dartType.substring(5, field.dartType.length - 1);
-      if (!['String', 'int', 'double', 'bool', 'dynamic']
-          .contains(innerType)) {
+      final innerType = field.dartType.substring(5, field.dartType.length - 1);
+      if (!['String', 'int', 'double', 'bool', 'dynamic'].contains(innerType)) {
         return field.isNullable
             ? '$name?.map((e) => e.toJson()).toList()'
             : '$name.map((e) => e.toJson()).toList()';

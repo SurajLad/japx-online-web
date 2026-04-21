@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Centralized color constants for the JPAX Parser app.
+/// Centralized color constants for the JAPX Parser app.
 /// Dark palette derived from the reference screenshot.
 class AppColors {
   AppColors._();

@@ -3,10 +3,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/monokai-sublime.dart';
 import 'package:flutter_highlight/themes/github.dart';
-import 'package:jpax_online/core/theme/app_colors.dart';
-import 'package:jpax_online/core/theme/app_typography.dart';
-import 'package:jpax_online/core/utils/file_downloader.dart';
-import 'package:jpax_online/features/model_generator/domain/models/generated_model.dart';
+import 'package:japx_online/core/theme/app_colors.dart';
+import 'package:japx_online/core/theme/app_typography.dart';
+import 'package:japx_online/core/utils/file_downloader.dart';
+import 'package:japx_online/features/model_generator/domain/models/generated_model.dart';
 
 /// Right-side panel for generating Dart model code from parsed JSON.
 class ModelGeneratorPanel extends StatefulWidget {
@@ -135,7 +135,6 @@ class _ModelGeneratorPanelState extends State<ModelGeneratorPanel> {
       ),
     );
   }
-
 }
 
 class _PanelHeader extends StatelessWidget {
@@ -437,5 +436,4 @@ class _BottomActions extends StatelessWidget {
       ),
     );
   }
-
 }

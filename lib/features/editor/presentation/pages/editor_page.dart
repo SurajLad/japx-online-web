@@ -6,18 +6,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
 import 'package:highlight/languages/json.dart' as highlight_json;
 import 'package:japx/japx.dart';
+import 'package:japx_online/core/constants/app_constants.dart';
 
-import 'package:jpax_online/core/theme/app_colors.dart';
-import 'package:jpax_online/features/editor/data/services/json_validator.dart';
-import 'package:jpax_online/features/editor/domain/models/json_diagnostic.dart';
-import 'package:jpax_online/features/editor/presentation/widgets/error_panel.dart';
-import 'package:jpax_online/features/editor/presentation/widgets/json_editor_panel.dart';
-import 'package:jpax_online/features/editor/presentation/widgets/sidebar.dart';
-import 'package:jpax_online/features/editor/presentation/widgets/status_bar.dart';
-import 'package:jpax_online/features/editor/presentation/widgets/top_bar.dart';
-import 'package:jpax_online/features/model_generator/data/services/dart_model_generator.dart';
-import 'package:jpax_online/features/model_generator/domain/models/generated_model.dart';
-import 'package:jpax_online/features/model_generator/presentation/widgets/model_generator_panel.dart';
+import 'package:japx_online/core/theme/app_colors.dart';
+import 'package:japx_online/features/editor/data/services/json_validator.dart';
+import 'package:japx_online/features/editor/domain/models/json_diagnostic.dart';
+import 'package:japx_online/features/editor/presentation/widgets/about_popup.dart';
+import 'package:japx_online/features/editor/presentation/widgets/error_panel.dart';
+import 'package:japx_online/features/editor/presentation/widgets/json_editor_panel.dart';
+import 'package:japx_online/features/editor/presentation/widgets/sidebar.dart';
+import 'package:japx_online/features/editor/presentation/widgets/status_bar.dart';
+import 'package:japx_online/features/editor/presentation/widgets/top_bar.dart';
+import 'package:japx_online/features/model_generator/data/services/dart_model_generator.dart';
+import 'package:japx_online/features/model_generator/domain/models/generated_model.dart';
+import 'package:japx_online/features/model_generator/presentation/widgets/model_generator_panel.dart';
 
 /// Main editor page — replaces the old MyHomePage.
 /// Layout: [Sidebar | Input + Output + ModelGenerator]
@@ -206,6 +208,49 @@ class _EditorPageState extends State<EditorPage> {
     );
   }
 
+  void _loadSampleJson() {
+    _inputController.text = AppConstants.sampleJson;
+    _onInputChanged();
+    _showSnackBar('Sample JSON loaded!');
+  }
+
+  void _showAboutPopup() {
+    showGeneralDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierLabel: 'About',
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      transitionDuration: const Duration(milliseconds: 300),
+      pageBuilder: (context, animation, secondaryAnimation) {
+        return Align(
+          alignment: Alignment.centerRight,
+          child: Material(
+            type: MaterialType.transparency,
+            child: AboutPopup(
+              onClose: () => Navigator.of(context).pop(),
+              onTrySample: () {
+                Navigator.of(context).pop();
+                _loadSampleJson();
+              },
+            ),
+          ),
+        );
+      },
+      transitionBuilder: (context, animation, secondaryAnimation, child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(1, 0),
+            end: Offset.zero,
+          ).animate(CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutCubic,
+          )),
+          child: child,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = widget.isDarkMode;
@@ -217,7 +262,7 @@ class _EditorPageState extends State<EditorPage> {
       body: Row(
         children: [
           // ── Sidebar ─────────────────────────────────
-          const Sidebar(),
+          Sidebar(onAboutTap: _showAboutPopup),
 
           // ── Main Content ────────────────────────────
           Expanded(

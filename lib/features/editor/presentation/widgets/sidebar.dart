@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:jpax_online/core/constants/app_constants.dart';
-import 'package:jpax_online/core/theme/app_colors.dart';
-import 'package:jpax_online/core/theme/app_typography.dart';
+import 'package:japx_online/core/constants/app_constants.dart';
+import 'package:japx_online/core/theme/app_colors.dart';
+import 'package:japx_online/core/theme/app_typography.dart';
 import 'package:web/web.dart' as web;
 
 /// Left navigation sidebar matching the reference screenshot.
 class Sidebar extends StatelessWidget {
-  const Sidebar({super.key});
+  final VoidCallback? onAboutTap;
+
+  const Sidebar({super.key, this.onAboutTap});
 
   @override
   Widget build(BuildContext context) {
@@ -41,24 +43,25 @@ class Sidebar extends StatelessWidget {
                   const SizedBox(height: 16),
                   _SidebarNavItem(
                     icon: Icons.description_outlined,
-                    label: 'Documentation',
+                    label: 'About',
                     textColor: mutedColor,
                     isDark: isDark,
-                    isPlaceholder: true,
+                    onTap: onAboutTap,
                   ),
-                  _SidebarNavItem(
-                    icon: Icons.code,
-                    label: 'Examples',
-                    textColor: mutedColor,
-                    isDark: isDark,
-                    isPlaceholder: true,
-                  ),
+                  // _SidebarNavItem(
+                  //   icon: Icons.code,
+                  //   label: 'Examples',
+                  //   textColor: mutedColor,
+                  //   isDark: isDark,
+                  //   isPlaceholder: true,
+                  // ),
                   _SidebarNavItem(
                     icon: Icons.support_agent,
                     label: 'Support',
                     textColor: mutedColor,
                     isDark: isDark,
-                    isPlaceholder: true,
+                    onTap: () =>
+                        web.window.open(AppConstants.githubRepoUrl, '_blank'),
                   ),
                 ],
               ),
@@ -75,7 +78,6 @@ class Sidebar extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class _SidebarHeader extends StatelessWidget {
@@ -174,40 +176,34 @@ class _SidebarNavItem extends StatelessWidget {
   final String label;
   final Color textColor;
   final bool isDark;
-  final bool isPlaceholder;
+  final VoidCallback? onTap;
 
   const _SidebarNavItem({
     required this.icon,
     required this.label,
     required this.textColor,
     required this.isDark,
-    this.isPlaceholder = false,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
-      opacity: isPlaceholder ? 0.5 : 1.0,
-      child: Tooltip(
-        message: isPlaceholder ? 'Coming Soon' : '',
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
-          ),
-          child: ListTile(
-            dense: true,
-            visualDensity: const VisualDensity(vertical: -3),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-            leading: Icon(icon, size: 18, color: textColor),
-            title: Text(
-              label,
-              style: AppTypography.sidebarItem.copyWith(color: textColor),
-            ),
-            onTap: isPlaceholder ? null : () {},
-          ),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: ListTile(
+        dense: true,
+        visualDensity: const VisualDensity(vertical: -3),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+        leading: Icon(icon, size: 18, color: textColor),
+        title: Text(
+          label,
+          style: AppTypography.sidebarItem.copyWith(color: textColor),
         ),
+        onTap: onTap,
       ),
     );
   }
@@ -234,7 +230,7 @@ class _SidebarBottomCta extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            'Love JPAX?',
+            'Love JAPX?',
             style: AppTypography.bodySmall.copyWith(color: mutedColor),
           ),
           Text(
@@ -272,4 +268,3 @@ class _SidebarBottomCta extends StatelessWidget {
     );
   }
 }
-

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:jpax_online/core/theme/app_colors.dart';
-import 'package:jpax_online/core/theme/app_typography.dart';
-import 'package:jpax_online/features/editor/domain/models/json_diagnostic.dart';
+import 'package:japx_online/core/theme/app_colors.dart';
+import 'package:japx_online/core/theme/app_typography.dart';
+import 'package:japx_online/features/editor/domain/models/json_diagnostic.dart';
 
 /// Collapsible error/warning panel displayed below the input editor.
 class ErrorPanel extends StatefulWidget {
@@ -103,18 +103,23 @@ class _ErrorSummaryBar extends StatelessWidget {
       child: Row(
         children: [
           if (errorCount > 0) ...[
-            _SeverityBadge(count: errorCount, color: AppColors.error, label: 'Error'),
+            _SeverityBadge(
+                count: errorCount, color: AppColors.error, label: 'Error'),
             const SizedBox(width: 8),
           ],
           if (warningCount > 0)
-            _SeverityBadge(count: warningCount, color: AppColors.warning, label: 'Warning'),
+            _SeverityBadge(
+                count: warningCount,
+                color: AppColors.warning,
+                label: 'Warning'),
           const Spacer(),
           if (totalDiagnostics > 3)
             TextButton(
               onPressed: onToggleShowAll,
               child: Text(
                 showAll ? 'Show less' : 'View all',
-                style: AppTypography.bodySmall.copyWith(color: AppColors.accent),
+                style:
+                    AppTypography.bodySmall.copyWith(color: AppColors.accent),
               ),
             ),
         ],
@@ -172,12 +177,10 @@ class _DiagnosticItem extends StatelessWidget {
     final surfaceColor = isError
         ? (isDarkMode ? AppColors.errorSurface : const Color(0xFFFEE2E2))
         : (isDarkMode ? AppColors.warningSurface : const Color(0xFFFEF3C7));
-    final textColor = isDarkMode
-        ? AppColors.darkTextPrimary
-        : AppColors.lightTextPrimary;
-    final mutedColor = isDarkMode
-        ? AppColors.darkTextSecondary
-        : AppColors.lightTextSecondary;
+    final textColor =
+        isDarkMode ? AppColors.darkTextPrimary : AppColors.lightTextPrimary;
+    final mutedColor =
+        isDarkMode ? AppColors.darkTextSecondary : AppColors.lightTextSecondary;
 
     return InkWell(
       onTap: () => onTap?.call(diagnostic),
