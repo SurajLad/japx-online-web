@@ -3,7 +3,6 @@ import 'package:japx_online/core/theme/app_colors.dart';
 import 'package:japx_online/core/theme/app_typography.dart';
 import 'package:japx_online/features/editor/domain/models/json_diagnostic.dart';
 
-/// Collapsible error/warning panel displayed below the input editor.
 class ErrorPanel extends StatefulWidget {
   final List<JsonDiagnostic> diagnostics;
   final bool isDarkMode;

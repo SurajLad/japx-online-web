@@ -17,26 +17,29 @@ class JsonValidator {
       diagnostics.addAll(_checkWarnings(input, decoded));
     } on FormatException catch (e) {
       final position = _extractPosition(e, input);
-      diagnostics.add(JsonDiagnostic(
-        severity: DiagnosticSeverity.error,
-        line: position.$1,
-        column: position.$2,
-        message: _cleanErrorMessage(e.message),
-        path: _guessPath(input, position.$1),
-      ));
+      diagnostics.add(
+        JsonDiagnostic(
+          severity: DiagnosticSeverity.error,
+          line: position.$1,
+          column: position.$2,
+          message: _cleanErrorMessage(e.message),
+          path: _guessPath(input, position.$1),
+        ),
+      );
     } catch (e) {
-      diagnostics.add(JsonDiagnostic(
-        severity: DiagnosticSeverity.error,
-        line: 1,
-        column: 1,
-        message: 'Unable to parse JSON: ${e.toString()}',
-      ));
+      diagnostics.add(
+        JsonDiagnostic(
+          severity: DiagnosticSeverity.error,
+          line: 1,
+          column: 1,
+          message: 'Unable to parse JSON: ${e.toString()}',
+        ),
+      );
     }
 
     return diagnostics;
   }
 
-  /// Extracts (line, column) from a [FormatException].
   (int, int) _extractPosition(FormatException e, String input) {
     final offset = e.offset;
     if (offset == null || offset < 0) return (1, 1);
@@ -54,9 +57,7 @@ class JsonValidator {
     return (line, column);
   }
 
-  /// Cleans up the default FormatException message.
   String _cleanErrorMessage(String message) {
-    // Remove trailing position info like "(at character 42)"
     final cleaned =
         message.replaceAll(RegExp(r'\(at character \d+\)'), '').trim();
     if (cleaned.isEmpty) return 'Invalid JSON syntax';
@@ -64,7 +65,6 @@ class JsonValidator {
     return cleaned[0].toUpperCase() + cleaned.substring(1);
   }
 
-  /// Tries to guess the JSON path of the error location.
   String? _guessPath(String input, int errorLine) {
     final lines = input.split('\n');
     final path = <String>[];

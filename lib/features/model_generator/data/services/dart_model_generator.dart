@@ -1,9 +1,6 @@
 import 'package:japx_online/features/model_generator/domain/models/generated_model.dart';
 
-/// Generates Dart model class source code from a JSON map.
 class DartModelGenerator {
-  /// Generates a Dart model from [json] with the given [className].
-  /// If [className] is null, attempts to infer from `type` field.
   GeneratedModel generate(Map<String, dynamic> json, {String? className}) {
     final name = className ?? _inferClassName(json) ?? 'GeneratedModel';
 
@@ -29,7 +26,6 @@ class DartModelGenerator {
     );
   }
 
-  /// Generates a single class definition.
   void _generateClass(
     StringBuffer buffer,
     String className,
@@ -49,10 +45,8 @@ class DartModelGenerator {
       ));
     });
 
-    // Class declaration
     buffer.writeln('class $className {');
 
-    // Fields
     for (final field in fields) {
       final nullSuffix = field.isNullable ? '?' : '';
       buffer
@@ -60,7 +54,6 @@ class DartModelGenerator {
     }
     buffer.writeln();
 
-    // Constructor
     buffer.writeln('  $className({');
     for (final field in fields) {
       final required = field.isNullable ? '' : 'required ';
@@ -69,7 +62,6 @@ class DartModelGenerator {
     buffer.writeln('  });');
     buffer.writeln();
 
-    // fromJson factory
     buffer
         .writeln('  factory $className.fromJson(Map<String, dynamic> json) {');
     buffer.writeln('    return $className(');
@@ -132,7 +124,6 @@ class DartModelGenerator {
     return 'dynamic';
   }
 
-  /// Generates fromJson expression for a field.
   String _fromJsonExpression(_FieldInfo field) {
     final access = "json['${field.jsonKey}']";
 

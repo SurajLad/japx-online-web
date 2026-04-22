@@ -1,4 +1,3 @@
-/// Data model for a generated code output.
 class GeneratedModel {
   final String className;
   final String sourceCode;

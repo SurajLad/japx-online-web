@@ -21,8 +21,6 @@ import 'package:japx_online/features/model_generator/data/services/dart_model_ge
 import 'package:japx_online/features/model_generator/domain/models/generated_model.dart';
 import 'package:japx_online/features/model_generator/presentation/widgets/model_generator_panel.dart';
 
-/// Main editor page — replaces the old MyHomePage.
-/// Layout: [Sidebar | Input + Output + ModelGenerator]
 class EditorPage extends StatefulWidget {
   final bool isDarkMode;
   final VoidCallback onToggleTheme;
@@ -49,7 +47,6 @@ class _EditorPageState extends State<EditorPage> {
   Map<String, dynamic>? _lastParsedOutput;
   Timer? _debounceTimer;
 
-  // Status bar tracking
   int _inputLine = 1;
   int _inputColumn = 1;
 

@@ -8,8 +8,6 @@ import 'package:japx_online/core/theme/app_colors.dart';
 import 'package:japx_online/core/theme/app_typography.dart';
 import 'package:japx_online/features/editor/domain/models/json_diagnostic.dart';
 
-/// Reusable JSON editor panel with syntax highlighting, line numbers,
-/// header bar, and optional error gutter markers.
 class JsonEditorPanel extends StatefulWidget {
   final String title;
   final int panelNumber;

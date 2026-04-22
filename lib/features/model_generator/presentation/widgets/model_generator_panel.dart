@@ -8,7 +8,6 @@ import 'package:japx_online/core/theme/app_typography.dart';
 import 'package:japx_online/core/utils/file_downloader.dart';
 import 'package:japx_online/features/model_generator/domain/models/generated_model.dart';
 
-/// Right-side panel for generating Dart model code from parsed JSON.
 class ModelGeneratorPanel extends StatefulWidget {
   final bool isDarkMode;
   final GeneratedModel? generatedModel;
@@ -126,9 +125,12 @@ class _ModelGeneratorPanelState extends State<ModelGeneratorPanel> {
                   ClipboardData(text: widget.generatedModel!.sourceCode),
                 );
                 setState(() => _copied = true);
-                Future.delayed(const Duration(seconds: 2), () {
-                  if (mounted) setState(() => _copied = false);
-                });
+                Future.delayed(
+                  const Duration(seconds: 2),
+                  () {
+                    if (mounted) setState(() => _copied = false);
+                  },
+                );
               },
             ),
         ],
@@ -279,8 +281,9 @@ class _GenerateButton extends StatelessWidget {
             backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent,
             padding: const EdgeInsets.symmetric(vertical: 12),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
         ),
       ),
@@ -330,7 +333,9 @@ class _PreviewSection extends StatelessWidget {
             const Spacer(),
             InkWell(
               onTap: () async {
-                await Clipboard.setData(ClipboardData(text: model.sourceCode));
+                await Clipboard.setData(
+                  ClipboardData(text: model.sourceCode),
+                );
               },
               child: Icon(Icons.copy, size: 14, color: mutedColor),
             ),

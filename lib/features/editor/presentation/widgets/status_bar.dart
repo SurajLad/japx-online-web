@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:japx_online/core/theme/app_colors.dart';
 import 'package:japx_online/core/theme/app_typography.dart';
 
-/// Bottom status bar showing format, line/column, and size info.
 class StatusBar extends StatelessWidget {
   final String format;
   final int line;

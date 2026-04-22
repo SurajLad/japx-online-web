@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:japx_online/core/theme/app_colors.dart';
 import 'package:japx_online/core/theme/app_typography.dart';
 
-/// Top action bar with theme toggle, Auto-format, Clear, and Transform buttons.
 class TopBar extends StatelessWidget {
   final bool isDarkMode;
   final VoidCallback onToggleTheme;

@@ -4,7 +4,6 @@ import 'package:japx_online/core/theme/app_colors.dart';
 import 'package:japx_online/core/theme/app_typography.dart';
 import 'package:web/web.dart' as web;
 
-/// Left navigation sidebar matching the reference screenshot.
 class Sidebar extends StatelessWidget {
   final VoidCallback? onAboutTap;
 
