@@ -4,6 +4,7 @@ import 'package:japx_online/core/theme/app_typography.dart';
 
 class TopBar extends StatelessWidget {
   final bool isDarkMode;
+  final bool isTransforming;
   final VoidCallback onToggleTheme;
   final VoidCallback onAutoFormat;
   final VoidCallback onClear;
@@ -12,6 +13,7 @@ class TopBar extends StatelessWidget {
   const TopBar({
     super.key,
     required this.isDarkMode,
+    this.isTransforming = false,
     required this.onToggleTheme,
     required this.onAutoFormat,
     required this.onClear,
@@ -72,7 +74,10 @@ class TopBar extends StatelessWidget {
           const SizedBox(width: 8),
 
           // ── Transform ─────────────────────────────────
-          _TransformBtn(onTap: onTransform),
+          _TransformBtn(
+            onTap: onTransform,
+            isTransforming: isTransforming,
+          ),
         ],
       ),
     );
@@ -143,23 +148,38 @@ class _ActionBtn extends StatelessWidget {
 
 class _TransformBtn extends StatelessWidget {
   final VoidCallback onTap;
+  final bool isTransforming;
 
-  const _TransformBtn({required this.onTap});
+  const _TransformBtn({
+    required this.onTap,
+    this.isTransforming = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [AppColors.accent, AppColors.accentLight],
+        gradient: LinearGradient(
+          colors: isTransforming
+              ? [Colors.grey.shade700, Colors.grey.shade600]
+              : [AppColors.accent, AppColors.accentLight],
         ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: ElevatedButton.icon(
-        onPressed: onTap,
-        icon: const Icon(Icons.transform, size: 18, color: Colors.white),
+        onPressed: isTransforming ? null : onTap,
+        icon: isTransforming
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white70,
+                ),
+              )
+            : const Icon(Icons.transform, size: 18, color: Colors.white),
         label: Text(
-          'Transform',
+          isTransforming ? 'Processing...' : 'Transform',
           style: AppTypography.button.copyWith(color: Colors.white),
         ),
         style: ElevatedButton.styleFrom(

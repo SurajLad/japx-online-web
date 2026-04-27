@@ -1,9 +1,26 @@
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 import 'package:flutter/material.dart';
 import 'package:japx_online/core/theme/app_theme.dart';
 import 'package:japx_online/features/editor/presentation/pages/editor_page.dart';
+import 'package:web/web.dart' as web;
 
 void main() {
   runApp(const JapxApp());
+
+  // Signal the loader to hide once the app is initialized
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    _hideSplashLoader();
+  });
+}
+
+void _hideSplashLoader() {
+  try {
+    // Call the global hideLoader function defined in index.html
+    (web.window as JSObject).callMethod('hideLoader'.toJS);
+  } catch (e) {
+    // Fallback if the JS function is not available or interop fails
+  }
 }
 
 class JapxApp extends StatefulWidget {
