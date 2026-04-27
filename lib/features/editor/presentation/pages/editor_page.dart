@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_code_editor/flutter_code_editor.dart';
@@ -116,24 +117,57 @@ class _EditorPageState extends State<EditorPage> {
     }
   }
 
-  void _onTransform() {
+  bool _isTransforming = false;
+
+  Future<void> _onTransform() async {
     final text = _inputController.text.trim();
     if (text.isEmpty) {
       _showSnackBar('Please enter JSON to transform.');
       return;
     }
 
+    setState(() => _isTransforming = true);
+
     try {
-      final decoded = jsonDecode(text);
-      final parsed = Japx.decode(decoded);
-      final prettyJson = _prettyPrint(parsed);
-      _outputController.text = prettyJson;
+      // Use compute to run decoding and transformation in a background isolate.
+      // This prevents UI lag for large JSON files.
+      final result = await _runTransformationAsync(text);
+      
+      if (!mounted) return;
+
+      _outputController.text = result.prettyJson;
       setState(() {
-        _lastParsedOutput = parsed;
+        _lastParsedOutput = result.parsedOutput;
+        _isTransforming = false;
       });
     } catch (error) {
-      _showSnackBar('Unable to parse the entered JSON. Check for errors.');
+      if (mounted) {
+        setState(() => _isTransforming = false);
+        _showSnackBar('Invalid JSON syntax or transformation error. Please check for errors.');
+      }
     }
+  }
+
+  static Future<_TransformResult> _runTransformationAsync(String text) async {
+    return await compute(_transformTask, text);
+  }
+
+  static _TransformResult _transformTask(String text) {
+    final decoded = jsonDecode(text);
+    dynamic parsed;
+    try {
+      parsed = Japx.decode(decoded);
+    } catch (_) {
+      parsed = decoded;
+    }
+
+    const encoder = JsonEncoder.withIndent('  ');
+    final pretty = encoder.convert(parsed);
+
+    return _TransformResult(
+      prettyJson: pretty,
+      parsedOutput: parsed is Map<String, dynamic> ? parsed : null,
+    );
   }
 
   void _onAutoFormat() {
@@ -268,6 +302,7 @@ class _EditorPageState extends State<EditorPage> {
                 // Top Bar
                 TopBar(
                   isDarkMode: isDark,
+                  isTransforming: _isTransforming,
                   onToggleTheme: widget.onToggleTheme,
                   onAutoFormat: _onAutoFormat,
                   onClear: _onClear,
@@ -368,4 +403,14 @@ class _EditorPageState extends State<EditorPage> {
       ),
     );
   }
+}
+
+class _TransformResult {
+  final String prettyJson;
+  final Map<String, dynamic>? parsedOutput;
+
+  _TransformResult({
+    required this.prettyJson,
+    this.parsedOutput,
+  });
 }

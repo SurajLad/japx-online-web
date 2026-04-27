@@ -4,22 +4,50 @@
 <head>
   <base href="/">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+
+  <!-- Primary Meta Tags -->
+  <title>JAPX - Online JSON:API Decoder & Model Generator</title>
+  <meta name="title" content="JAPX - Online JSON:API Decoder & Model Generator">
   <meta name="description"
-    content="JSON API Parser online is a tool for converting complex JSON:API structure into simple JSON based on Flutter Japx.">
+    content="The most powerful online tool to flatten complex JSON:API structures into clean JSON. Generate Dart models instantly, validate JSON, and speed up your API development.">
+  <meta name="keywords"
+    content="JSON:API, JAPX, JSON Decoder, JSON Flatten, Dart Model Generator, Flutter, JSON Validator, API Development Tool">
+  <meta name="author" content="Suraj Lad">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://json-api-parser-jpax.web.app/">
+  <meta property="og:title" content="JAPX - Online JSON:API Decoder & Model Generator">
+  <meta property="og:description"
+    content="Flatten complex JSON:API structures into clean JSON instantly. Free online tool for developers.">
+  <meta property="og:image" content="https://json-api-parser-jpax.web.app/icons/Icon-512.png">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://json-api-parser-jpax.web.app/">
+  <meta property="twitter:title" content="JAPX - Online JSON:API Decoder & Model Generator">
+  <meta property="twitter:description"
+    content="Flatten complex JSON:API structures into clean JSON instantly. Free online tool for developers.">
+  <meta property="twitter:image" content="https://json-api-parser-jpax.web.app/icons/Icon-512.png">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="JSON API Parser JAPX">
+  <meta name="apple-mobile-web-app-title" content="JAPX">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-  <title>JSON API Parser JAPX - Decoder Online</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="canonical" href="https://json-api-parser-jpax.web.app/" />
 
   <style>
     body {
@@ -152,14 +180,21 @@
 
     const textInterval = setInterval(updateText, 2200);
 
-    const hideLoader = () => {
+    window.hideLoader = () => {
       const loader = document.getElementById('loading-container');
-      loader.classList.add('fade-out');
-      clearInterval(textInterval);
-      setTimeout(() => {
-        loader.remove();
-      }, 800);
+      if (loader) {
+        loader.classList.add('fade-out');
+        if (typeof textInterval !== 'undefined') clearInterval(textInterval);
+        setTimeout(() => {
+          loader.remove();
+        }, 800);
+      }
     };
+
+    // Safety fallback: Hide loader after 10 seconds if it's still visible
+    setTimeout(() => {
+      window.hideLoader();
+    }, 10000);
   </script>
 
   <script src="flutter_bootstrap.js" async></script>
@@ -189,11 +224,11 @@
           onEntrypointLoaded: async function (engineInitializer) {
             const appRunner = await engineInitializer.initializeEngine();
             await appRunner.runApp();
-            setTimeout(hideLoader, 500);
+            setTimeout(window.hideLoader, 500);
           }
         });
       } else {
-        window.addEventListener('flutter-first-frame', hideLoader);
+        window.addEventListener('flutter-first-frame', window.hideLoader);
       }
     });
   </script>
